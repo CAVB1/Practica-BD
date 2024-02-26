@@ -87,7 +87,7 @@
                         <td>{{ priv.privilege }}</td>
                         <td>{{ priv.description }}</td>
                         <td><a href="{% url 'administration:delete_privilege' priv.id %}">Eliminar</a></td>
-                        <td><a href="">Editar</a></td>
+                        <td><a href="{% url 'administration:edit_privilege' priv.id %}">Editar</a></td>
                     </tr>
                     {% endfor %}
                     {% endif %}

@@ -181,6 +181,25 @@ def updateUser(request, user_id):
     else:
         return HttpResponseRedirect(reverse("administration:users",args={}))
     
+def editPrivilege(request, privilege_id):
+    privilege = get_object_or_404(Privilege, pk = privilege_id )
+    return render(request, "administration/new_priv.html", {"priv_obj": privilege})
+
+
+def updatePrivilege(request, privilege_id):
+    priv = Privilege.objects.get(pk=privilege_id)
+    try:
+        priv.privilege = request.POST["priv"]
+        priv.description = request.POST["description"]
+        priv.save()
+
+    except(KeyError, Privilege.DoesNotExist):
+        return render(request, "administration:edit_privilege.html",{
+            "error_message": "Algo ha salido mal",
+            "priv_obj": Privilege.objects.get(pk = privilege_id)
+        })
+    else:
+        return HttpResponseRedirect(reverse("administration:privileges", args={}))
 
 def addUserPrivilege(request, user_id, id_table, id_privilege):
     control = Control.objects.filter(user=user_id, table=id_table, privilege=id_privilege)

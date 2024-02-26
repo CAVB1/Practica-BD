@@ -1,12 +1,20 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% if priv_obj %}
+    <title>Editar privilegio</title>
+    {% else %}
     <title>Registrar privilegio</title>
+    {% endif %}
+
+
     <link rel="stylesheet" href="{% static 'styles/styles.css' %}">
 </head>
+
 <body>
     <nav>
         <ul>
@@ -15,30 +23,67 @@
             <li><a href="{% url 'administration:privileges' %}">Privilegios</a></li>
             <li><a href="{% url 'administration:tables' %}">Tablas</a></li>
         </ul>
-        
+
     </nav>
     <main>
+        {% if error_message %}
+        <p>{{ error_message }}</p>
+        {% endif %}
+
+        {% if priv_obj %}
+
+        <form action="{% url 'administration:update_privilege' priv_obj.id %}" class="new-form" method="post">
+            {% csrf_token %}
+            <fieldset>
+                <legend>
+                    <h1>Nuevo privilegio</h1>
+                </legend>
+                <label for="priv">Nombre</label>
+                <input type="text" name="priv" id="priv" placeholder="Nombre del privilegio" value="{{ priv_obj.privilege }}" required>
+                <br>
+                <br>
+
+
+
+
+                <label for="description">Descripción</label>
+                <textarea name="description" id="description" cols="30" rows="10"  required>
+                    {{ priv_obj.description }}
+                </textarea>
+
+                <br>
+                <br>
+                <input type="submit" value="Guardar">
+
+            </fieldset>
+        {% else %}
+
         <form action="{% url 'administration:save_privilege' %}" class="new-form" method="post">
             {% csrf_token %}
             <fieldset>
-                <legend><h1>Nuevo privilegio</h1></legend>
+                <legend>
+                    <h1>Nuevo privilegio</h1>
+                </legend>
                 <label for="priv">Nombre</label>
                 <input type="text" name="priv" id="priv" placeholder="Nombre del privilegio" required>
                 <br>
                 <br>
 
-                
-                
-                
+
+
+
                 <label for="description">Descripción</label>
                 <textarea name="description" id="description" cols="30" rows="10" required></textarea>
 
                 <br>
                 <br>
                 <input type="submit" value="Guardar">
-                
+
             </fieldset>
-        </form>
+        {% endif %}
+        
+        
     </main>
 </body>
+
 </html>
