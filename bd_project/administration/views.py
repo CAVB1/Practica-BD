@@ -200,6 +200,29 @@ def updatePrivilege(request, privilege_id):
         })
     else:
         return HttpResponseRedirect(reverse("administration:privileges", args={}))
+    
+
+    
+def editTable(request, table_id):
+    table = Table.objects.get(pk = table_id)
+    return render(request, "administration/new_table.html", {"table_obj":table})
+
+def updateTable(request, table_id):
+    table = Table.objects.get(pk = table_id)
+    try:
+        table.table = request.POST['table']
+        table.description = request.POST['description']
+
+        table.save()
+
+    except(KeyError, Table.DoesNotExist):
+        return render(request, "administracion:edit_table", {
+            "error_message": "Algo ha salido mal",
+            "table_obj" : Table.objects.get(pk = table_id)
+        })
+    else:
+        return HttpResponseRedirect(reverse("administration:tables", args={}))
+
 
 def addUserPrivilege(request, user_id, id_table, id_privilege):
     control = Control.objects.filter(user=user_id, table=id_table, privilege=id_privilege)

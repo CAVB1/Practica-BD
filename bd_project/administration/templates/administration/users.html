@@ -110,7 +110,7 @@
                         <td>{{ table.table }}</td>
                         <td>{{ table.description }}</td>
                         <td><a href="{% url 'administration:delete_table' table.id %}">Eliminar</a></td>
-                        <td><a href="">Editar</a></td>
+                        <td><a href="{% url 'administration:edit_table' table.id %}">Editar</a></td>
                     </tr>
                     {% endfor %}
                     {% endif %}

@@ -1,12 +1,19 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% if table_obj %}
+    <title>Editar tabla</title>
+    {% else %}
     <title>Registrar tabla</title>
+    {% endif %}
+
     <link rel="stylesheet" href="{% static 'styles/styles.css' %}">
 </head>
+
 <body>
     <nav>
         <ul>
@@ -15,30 +22,64 @@
             <li><a href="{% url 'administration:privileges' %}">Privilegios</a></li>
             <li><a href="{% url 'administration:tables' %}">Tablas</a></li>
         </ul>
-        
+
     </nav>
     <main>
+        {% if table_obj %}
+        <form action="{% url 'administration:update_table' table_obj.id %}" class="new-form" method="post">
+            {% csrf_token %}
+            <fieldset>
+                <legend>
+
+                    <h1>Nueva tabla</h1>
+                </legend>
+                <label for="table">Tabla</label>
+                <input type="text" name="table" id="table" placeholder="Nombre de la tabla"
+                    value="{{ table_obj.table }}" required>
+                <br>
+                <br>
+
+
+
+
+                <label for="description">Descripción</label>
+                <textarea name="description" id="description" cols="30" rows="10" placeholder="Descripción de la tabla" required>{{ table_obj.description }}</textarea>
+
+                <br>
+                <br>
+                <input type="submit" value="Guardar">
+
+            </fieldset>
+        </form>
+        {% else %}
         <form action="{% url 'administration:save_table' %}" class="new-form" method="post">
             {% csrf_token %}
             <fieldset>
-                <legend><h1>Nueva tabla</h1></legend>
+                <legend>
+
+                    <h1>Nueva tabla</h1>
+                </legend>
                 <label for="table">Tabla</label>
                 <input type="text" name="table" id="table" placeholder="Nombre de la tabla" required>
                 <br>
                 <br>
 
-                
-                
-                
+
+
+
                 <label for="description">Descripción</label>
-                <textarea name="description" id="description" cols="30" rows="10" placeholder="Descripción de la tabla" required></textarea>
+                <textarea name="description" id="description" cols="30" rows="10" placeholder="Descripción de la tabla"
+                    required></textarea>
 
                 <br>
                 <br>
                 <input type="submit" value="Guardar">
-                
+
             </fieldset>
         </form>
+        {% endif %}
+
     </main>
 </body>
+
 </html>

@@ -21,6 +21,8 @@ urlpatterns=[
     path("/Tables/New", views.newTable, name="new_table"),
     path("/Tables/SaveTable", views.saveTable, name="save_table"),
     path("/Tables/<int:table_id>/Delete",views.deleteTable,name="delete_table"),
+    path("/Tables/<int:table_id>/EditTable",views.editTable,name="edit_table"),
+    path("/Tables/<int:table_id>/UpdateTable",views.updateTable,name="update_table"),
 
     path("/Querys/", views.Query, name="query"),
     path("/Querys/Select", views.querySelect, name="query_select"),
