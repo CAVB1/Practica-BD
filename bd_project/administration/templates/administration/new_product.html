@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registrar producto</title>
+    <link rel="stylesheet" href="./styles/styles.css">
+</head>
+
+<body>
+    <nav>
+        <ul>
+            <li><a href="{% url 'administration:index' %}">Home</a></li>
+            <li><a href="{% url 'administration:users' %}">Usuarios</a></li>
+            <li><a href="{% url 'administration:privileges' %}">Privilegios</a></li>
+            <li><a href="{% url 'administration:tables' %}">Tablas</a></li>
+        </ul>
+
+    </nav>
+    <main>
+        <form action="#" class="new-form" method="post">
+            <fieldset>
+                <legend>
+                    <h1>Nuevo producto</h1>
+                </legend>
+                <label for="product">Producto</label>
+                <input type="text" name="product" id="product" placeholder="Nombre del producto" required>
+                <br>
+                <br>
+
+                <label for="description">Descripción</label>
+                <textarea name="description" id="description" cols="30" rows="10" placeholder="Descripción del producto"
+                    required></textarea>
+                <br>
+                <br>
+
+                <label for="price">Precio</label>
+                <input type="number" name="price" id="price" required min="0">
+                <br>
+                <br>
+
+                <input type="submit" value="Guardar">
+
+            </fieldset>
+        </form>
+    </main>
+</body>
+
+</html>

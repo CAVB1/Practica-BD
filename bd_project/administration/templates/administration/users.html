@@ -1,0 +1,126 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Usuarios | BD</title>
+    <link rel="stylesheet" href="{% static 'styles/styles.css' %}">
+</head>
+
+<body>
+    <nav>
+        <ul>
+            <li><a href="{% url 'administration:index' %}">Home</a></li>
+            <li><a href="{% url 'administration:users' %}">Usuarios</a></li>
+            <li><a href="{% url 'administration:privileges' %}">Privilegios</a></li>
+            <li><a href="{% url 'administration:tables' %}">Tablas</a></li>
+        </ul>
+
+    </nav>
+
+    <header>
+        <div class="h1-container">
+            <h1>{{ interface }}</h1>
+        </div>
+        <div class="double-divider"></div>
+
+        <div class="options-container">
+            <div><input type="text" name="search" id="search" placeholder="Buscar un registro">
+                <button onclick="">Buscar</button>
+            </div>
+
+            <a
+                href="{% if interface == 'Usuarios' %} {% url 'administration:new_user' %} {% elif interface == 'Privilegios' %} {% url 'administration:new_privilege'  %} {% elif interface == 'Tablas' %} {% url 'administration:new_table' %} {% endif %}">
+                Agregar nuevo</a>
+        </div>
+    </header>
+    <main class="container-flex">
+        <div class="table-container">
+            <table class="bordered-table" cellspacing="0">
+
+                {% if interface == "Usuarios" %}
+                <thead>
+                    <th>ID</th>
+                    <th>Username</th>
+                    <th>Password</th>
+                    <th>Nombre</th>
+                    <th>Rol</th>
+
+                    <th>Fecha de actualización</th>
+                    <th>Eliminar</th>
+                    <th>Editar</th>
+                </thead>
+                <tbody>
+
+                    {% if obj_list %}
+                    {% for user in obj_list %}
+                    <tr>
+                        <td>{{ user.id }}</td>
+                        <td>{{ user.username }}</td>
+                        <td>{{ user.password }}</td>
+                        <td>{{ user.name }}</td>
+                        <td>{{ user.rol }}</td>
+                        <td>{{ user.update_date }}</td>
+                        <td><a href="{% url 'administration:delete_user' user.id %}">Eliminar</a></td>
+                        <td><a href="{% url 'administration:edit_user' user.id %}">Editar</a></td>
+                    </tr>
+                    {% endfor %}
+                    {% endif %}
+
+                </tbody>
+                {% elif interface == "Privilegios" %}
+                <thead>
+                    <th>ID</th>
+                    <th>Nombre</th>
+                    <th>Descripción</th>
+                    <th>Eliminar</th>
+                    <th>Editar</th>
+                </thead>
+                <tbody>
+
+                    {% if obj_list %}
+                    {% for priv in obj_list %}
+                    <tr>
+                        <td>{{ priv.id }}</td>
+                        <td>{{ priv.privilege }}</td>
+                        <td>{{ priv.description }}</td>
+                        <td><a href="{% url 'administration:delete_privilege' priv.id %}">Eliminar</a></td>
+                        <td><a href="">Editar</a></td>
+                    </tr>
+                    {% endfor %}
+                    {% endif %}
+
+                </tbody>
+
+                {% elif interface == "Tablas" %}
+                <thead>
+                    <th>ID</th>
+                    <th>Nombre</th>
+                    <th>Descripción</th>
+                    <th>Eliminar</th>
+                    <th>Editar</th>
+                </thead>
+                <tbody>
+                    {% if obj_list %}
+                    {% for table in obj_list %}
+                    <tr>
+                        <td>{{ table.id }}</td>
+                        <td>{{ table.table }}</td>
+                        <td>{{ table.description }}</td>
+                        <td><a href="{% url 'administration:delete_table' table.id %}">Eliminar</a></td>
+                        <td><a href="">Editar</a></td>
+                    </tr>
+                    {% endfor %}
+                    {% endif %}
+                </tbody>
+                {% endif %}
+
+
+            </table>
+        </div>
+    </main>
+</body>
+
+</html>

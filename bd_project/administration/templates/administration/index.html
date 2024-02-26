@@ -1,0 +1,53 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <link rel="stylesheet" href="{% static 'styles/index.css' %}">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inicio | BD</title>
+</head>
+
+<body class="flex-row-container">
+
+    <header>
+        <p class="author-name">Guadalupe Vargas Martínez</p>
+        <h1>Administración de BD</h1>
+    </header>
+    <main>
+        <div class="instructions">
+            <h2>Selecciona una opción</h2>
+        </div>
+        <div class="divider"></div>
+        <ul class="menu-container">
+            <li>
+                <div class="menu-item-color"></div>
+                <div class="divider"></div>
+                <div class="menu-item">
+                    <a href="{% url 'administration:users' %}">Usuarios</a>
+                    
+                </div>
+            </li>
+            <li>
+                <div class="menu-item-color"></div>
+                <div class="divider"></div>
+                <div class="menu-item">
+                    <a href="{% url 'administration:privileges' %}">Privilegios</a>
+                    
+                </div>
+            </li>
+            <li>
+                <div class="menu-item-color"></div>
+                <div class="divider"></div>
+                <div class="menu-item">
+                    <a href="{% url 'administration:tables' %}">Tablas</a>
+                   
+                </div>
+            </li>
+
+        </ul>
+    </main>
+</body>
+
+</html>

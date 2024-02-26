@@ -1,0 +1,44 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registrar privilegio</title>
+    <link rel="stylesheet" href="{% static 'styles/styles.css' %}">
+</head>
+<body>
+    <nav>
+        <ul>
+            <li><a href="{% url 'administration:index' %}">Home</a></li>
+            <li><a href="{% url 'administration:users' %}">Usuarios</a></li>
+            <li><a href="{% url 'administration:privileges' %}">Privilegios</a></li>
+            <li><a href="{% url 'administration:tables' %}">Tablas</a></li>
+        </ul>
+        
+    </nav>
+    <main>
+        <form action="{% url 'administration:save_privilege' %}" class="new-form" method="post">
+            {% csrf_token %}
+            <fieldset>
+                <legend><h1>Nuevo privilegio</h1></legend>
+                <label for="priv">Nombre</label>
+                <input type="text" name="priv" id="priv" placeholder="Nombre del privilegio" required>
+                <br>
+                <br>
+
+                
+                
+                
+                <label for="description">Descripción</label>
+                <textarea name="description" id="description" cols="30" rows="10" required></textarea>
+
+                <br>
+                <br>
+                <input type="submit" value="Guardar">
+                
+            </fieldset>
+        </form>
+    </main>
+</body>
+</html>

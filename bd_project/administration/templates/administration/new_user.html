@@ -1,0 +1,127 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% if user_obj %}
+    <title>Editar usuario</title>
+    {% else %}
+    <title>Registrar usuario</title>
+    {% endif %}
+    <link rel="stylesheet" href="{% static 'styles/styles.css' %}">
+</head>
+
+<body>
+    <nav>
+        <ul>
+            <li><a href="{% url 'administration:index' %}">Home</a></li>
+            <li><a href="{% url 'administration:users' %}">Usuarios</a></li>
+            <li><a href="{% url 'administration:privileges' %}">Privilegios</a></li>
+            <li><a href="{% url 'administration:tables' %}">Tablas</a></li>
+        </ul>
+
+    </nav>
+    <main>
+        {% if error_message %}
+        <p>{{ error_message }}</p>
+        {% endif %}
+        {% if user_obj %}
+        <form action="{% url 'administration:update_user' user_obj.id %}" class="new-form" method="post">
+            {% csrf_token %}
+            <fieldset>
+
+                <legend>
+                    <h1>Editar usuario</h1>
+                </legend>
+                <label for="username">Username</label>
+                <input type="text" name="username" id="username" placeholder="Username" value="{{ user_obj.username }}"
+                    required>
+                <br>
+                <br>
+
+                <label for="password">Contraseña</label>
+                <input type="password" name="password" id="password" placeholder="Escribe una contraseña"
+                    value="{{ user_obj.username }}" required>
+                <br>
+                <br>
+
+                <label for="name">Nombre</label>
+                <input type="text" name="name" id="name" placeholder="Nombre" value="{{ user_obj.name }}" required>
+                <br>
+                <br>
+
+                <label for="rol">Rol</label>
+                <input type="text" name="rol" id="rol" placeholder="Rol" value="{{ user_obj.rol }}" required>
+
+
+                <br>
+                <br>
+                <input type="submit" value="Guardar">
+
+            </fieldset>
+            <div>
+                <h2>
+                    Privilegios
+
+                </h2>
+                <div>
+                    <ul>
+                        {% for op in privs %}
+                        <li>{{ op.table }} : {{ op.privilege }}</li>
+                        {% endfor %}
+                    </ul>
+
+                </div>
+            </div>
+            <div>
+                <h2>Agregar privilegios</h2>
+                <ul>
+                    {% for t in tables %}
+                    {% for p in privileges %}
+                    <li><a href="{% url 'administration:add_user_privilege' user_obj.id t p %}">{{ t }} : {{ p }}</a></li>
+
+                    {% endfor %}
+                    {% endfor %}
+                </ul>
+            </div>
+        </form>
+        {% else %}
+        <form action="{% url 'administration:save_user' %}" class="new-form" method="post">
+            {% csrf_token %}
+            <fieldset>
+
+                <legend>
+                    <h1>Nuevo usuario</h1>
+                </legend>
+                <label for="username">Username</label>
+                <input type="text" name="username" id="username" placeholder="Username" required>
+                <br>
+                <br>
+
+                <label for="password">Contraseña</label>
+                <input type="password" name="password" id="password" placeholder="Escribe una contraseña" required>
+                <br>
+                <br>
+
+                <label for="name">Nombre</label>
+                <input type="text" name="name" id="name" placeholder="Nombre" required>
+                <br>
+                <br>
+
+                <label for="rol">Rol</label>
+                <input type="text" name="rol" id="rol" placeholder="Rol" required>
+
+
+                <br>
+                <br>
+                <input type="submit" value="Guardar">
+
+            </fieldset>
+        </form>
+        {% endif %}
+    </main>
+</body>
+
+</html>
