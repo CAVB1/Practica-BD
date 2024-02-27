@@ -13,7 +13,16 @@ def index(request):
     return render(request, "administration/index.html",{})
 
 def users(request):
-    user_list= User.objects.order_by("-update_date")
+
+    if request.GET.get("searching",False):
+        search = request.GET['searching']
+        
+        if search.strip() != "":
+            user_list= User.objects.filter(username__contains=search)
+        else:
+            user_list= User.objects.order_by("-update_date")
+    else:
+        user_list= User.objects.order_by("-update_date")
 
     context = {
         "obj_list":user_list,

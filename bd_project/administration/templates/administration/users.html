@@ -27,9 +27,11 @@
         <div class="double-divider"></div>
 
         <div class="options-container">
-            <div><input type="text" name="search" id="search" placeholder="Buscar un registro">
+            <form action="" method="get">
+                
+                <input type="text" name="searching" id="searching" placeholder="Buscar un registro">
                 <button onclick="">Buscar</button>
-            </div>
+            </form>
 
             <a
                 href="{% if interface == 'Usuarios' %} {% url 'administration:new_user' %} {% elif interface == 'Privilegios' %} {% url 'administration:new_privilege'  %} {% elif interface == 'Tablas' %} {% url 'administration:new_table' %} {% endif %}">
