@@ -32,7 +32,15 @@ def users(request):
 
     return render(request, "administration/users.html", context)
 def privileges(request):
-    user_list= Privilege.objects.all()
+    if request.GET.get("searching",False):
+        search = request.GET['searching']
+        
+        if search.strip() != "":
+            user_list= Privilege.objects.filter(privilege__contains=search)
+        else:
+            user_list= Privilege.objects.all()
+    else:
+        user_list= Privilege.objects.all()
 
     context = {
         "obj_list":user_list,
@@ -41,7 +49,15 @@ def privileges(request):
 
     return render(request, "administration/users.html", context)
 def tables(request):
-    user_list= Table.objects.all()
+    if request.GET.get("searching",False):
+        search = request.GET['searching']
+        
+        if search.strip() != "":
+            user_list= Table.objects.filter(table__contains=search)
+        else:
+            user_list= Table.objects.all()
+    else:
+        user_list= Table.objects.all()
 
     context = {
         "obj_list":user_list,
