@@ -3,6 +3,7 @@ from django.http import HttpResponse, Http404, HttpResponseRedirect, JsonRespons
 from django.views import generic
 from django.utils import timezone
 from django.urls import reverse
+from django.core import serializers
 
 from .models import User, Table, Control, Privilege, Product
 
@@ -252,19 +253,88 @@ def Query(request):
         table_list.append([t.id,t.table])
 
     return render(request, "administration/querys.html",{"table_list":table_list})
-
+import json
 def querySelect(request):
+    
     user = User.objects.filter(username=request.POST['username']).filter(password=request.POST['password'])
 
     if user:
+        user = User.objects.get(username=request.POST['username'])
         if Control.objects.filter(user=user.id).filter(table=request.POST['table']).filter(privilege=request.POST['type']):
-            if request.POST['type']==1 and request.POST['type-q']=="all":
-                list=Product.objects.all().__dict__
-                return HttpResponse({"value": list})
-
-
+             if request.POST['type']=="1" and request.POST['type-q']=="all":
+                product_list= serializers.serialize("json",Product.objects.all())
+                
+                return JsonResponse({"value":product_list},safe=False)
+             elif request.POST['type']=="1" and request.POST['type-q']=="one":
+                 product_list= serializers.serialize("json",Product.objects.filter(pk = request.POST['id'] ))
+                  
+                 return JsonResponse({"value":product_list},safe=False)
+                
+               
+        return JsonResponse({"value": "No tienes este privilegio"},safe=False)
     else:
-        return HttpResponse({"value":"Error de usuario o contraseña"})
-        
+        return JsonResponse({"value": "Error"},safe=False)
+    
 
+def queryInsert(request):
+    user = User.objects.filter(username=request.POST['username']).filter(password=request.POST['password'])
+    if user:
+        user = User.objects.get(username=request.POST['username'])
+        if Control.objects.filter(user=user.id).filter(table=request.POST['table']).filter(privilege=request.POST['type']):
+            try:
+                new_product = Product(product= request.POST['product'], descrpition=request.POST['description'], price= request.POST["price"])
+                new_product.save()
+            except(KeyError):
+                return JsonResponse({"value": "Parece que falta algún campo"}, safe=False)
+            else:
+                return JsonResponse({"value": serializers.serialize("json",Product.objects.filter(pk = new_product.id))}, safe=False)
+            
+        else:
+            return JsonResponse({"value": "No tienes este privilegio"},safe=False)
+    else:
+        return JsonResponse({"value": "Error"},safe=False)
+        
+def queryUpdate(request):
+    
+    user = User.objects.filter(username=request.POST['username']).filter(password=request.POST['password'])
+    if user:
+        user = User.objects.get(username=request.POST['username'])
+        if Control.objects.filter(user=user.id).filter(table=request.POST['table']).filter(privilege=request.POST['type']):
+            product = get_object_or_404(Product, pk = request.POST["id"])
+            try:
+                product.product = request.POST["product"]
+                product.descrpition = request.POST["description"]
+                product.price = request.POST["price"]
+                product.save()
+            except(KeyError):
+                return JsonResponse({"value": "Parece que falta algún campo"}, safe=False)
+            else:
+                return JsonResponse({"value": serializers.serialize("json",Product.objects.filter(pk = product.id))}, safe=False)
+            
+        else:
+            return JsonResponse({"value": "No tienes este privilegio"},safe=False)
+    else:
+        return JsonResponse({"value": "Error"},safe=False)
+    
+
+def queryDelete(request):
+    user = User.objects.filter(username=request.POST['username']).filter(password=request.POST['password'])
+    if user:
+        user = User.objects.get(username=request.POST['username'])
+        if Control.objects.filter(user=user.id).filter(table=request.POST['table']).filter(privilege=request.POST['type']):
+            try:
+                product = Product.objects.get(pk = request.POST['id'])
+                id_product = product.id
+                product.delete()
+            except(KeyError):
+                return JsonResponse({"value": "Parece que falta algún campo"}, safe=False)
+            except (Product.DoesNotExist):
+                return JsonResponse({"value": "El registro no existe"}, safe=False)
+            else:
+                return JsonResponse({"value": f"El producto con id {id_product} ha sido eliminado"}, safe=False)
+            
+        else:
+            return JsonResponse({"value": "No tienes este privilegio"},safe=False)
+    else:
+        return JsonResponse({"value": "Error"},safe=False)
     

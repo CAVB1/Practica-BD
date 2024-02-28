@@ -28,6 +28,7 @@
 
         <div class="options-container">
             <form action="" method="get">
+                {% csrf_token %}
                 
                 <input type="text" name="searching" id="searching" placeholder="Buscar un registro">
                 <button onclick="">Buscar</button>

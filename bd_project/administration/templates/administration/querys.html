@@ -10,7 +10,7 @@
 <body>
 
     <fieldset>
-        {% csrf_token %}
+        <input type="hidden" id="token" name="token" value="{{ csrf_token }}">
         <legend>Consulta</legend>
         <br>
         <br>
@@ -30,9 +30,9 @@
             <option value="">Selecciona una tabla</option>
             {% if table_list %}
             {% for i in table_list %}
-                <option value="{{ i.0 }}">{{ i.1 }}</option>
+            <option value="{{ i.0 }}">{{ i.1 }}</option>
             {% endfor %}
-            {% endif  %}
+            {% endif %}
         </select>
         <br>
         <br>
@@ -120,7 +120,7 @@
 
 
     <script>
-        const response_area= document.getElementById("response");
+        const response_area = document.getElementById("response");
         const button = document.getElementById("send");
         const select_cont = document.getElementById("select-cont");
         const insert_cont = document.getElementById("insert-cont");
@@ -132,6 +132,7 @@
         const username = document.getElementById("user");
         const password = document.getElementById("password");
         const table_v = document.getElementById("table");
+        const token = document.getElementById("token");
 
         // Fiels for select query
         // const type_select = document.querySelector('input[name = "type-q"]:checked');
@@ -150,7 +151,23 @@
 
         // Fields for Delete
         const id_del = document.getElementById("id-del");
+        function getToken(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie != '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    // Does this cookie string begin with the name we want?
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
 
+        var csrftoken = getToken('csrftoken')
 
         sel.onchange = function () {
             if (sel.value !== "") {
@@ -190,29 +207,35 @@
             // console.log(document.querySelector('input[name = "type-q"]:checked').value);
             switch (sel.value) {
                 case "1":
-                    console.log("select");
+                    console.log(sel.value);
 
                     let form1 = new FormData();
-                    
+
+                    form1.append("csrfmiddlewaretoken", token.value)
                     form1.append('username', username.value);
                     form1.append('password', password.value);
                     form1.append("type", sel.value);
                     //Table PK
                     form1.append("table", table.value);
-                    form1.append("type-q",document.querySelector('input[name = "type-q"]:checked').value);
-                    form1.append("id",id_select.value);
+                    form1.append("type-q", document.querySelector('input[name = "type-q"]:checked').value);
+                    form1.append("id", id_select.value);
 
 
-                    
+
 
 
                     fetch("{% url 'administration:query_select' %}", {
                         method: 'POST',
+                        headers: {
+                            "X-CSRFToken": csrftoken,
+
+                        },
                         body: form1
                     })
                         .then(response => response.json())
-                        .then(data =>{ console.log(data);
-                            response_area.value=data;
+                        .then(data => {
+                            console.log(data.value);
+                            response_area.value = data.value;
                         });
                     break;
 
@@ -228,19 +251,24 @@
                     //Table PK
                     form2.append("table", table.value);
 
-                    form2.append("product",product_in.value);
-                    form2.append("description",description_in.value);
-                    form2.append("price",price_in.value);
-                
+                    form2.append("product", product_in.value);
+                    form2.append("description", description_in.value);
+                    form2.append("price", price_in.value);
 
 
-                    fetch('http://example.com/movies.json', {
+
+                    fetch("{% url 'administration:query_insert' %}", {
                         method: 'POST',
+                        headers: {
+                            "X-CSRFToken": csrftoken,
+
+                        },
                         body: form2
                     })
                         .then(response => response.json())
-                        .then(data =>{ console.log(data);
-                            response_area.value=data;
+                        .then(data => {
+                            console.log(data);
+                            response_area.value = data.value;
                         });
 
                     break;
@@ -259,13 +287,18 @@
                     form3.append("price", price_up.value);
 
 
-                    fetch('http://example.com/movies.json', {
+                    fetch("{% url 'administration:query_update' %}", {
                         method: 'POST',
+                        headers: {
+                            "X-CSRFToken": csrftoken,
+
+                        },
                         body: form3
                     })
                         .then(response => response.json())
-                        .then(data =>{ console.log(data);
-                            response_area.value=data;
+                        .then(data => {
+                            console.log(data);
+                            response_area.value = data.value;
                         });
                     break;
 
@@ -283,13 +316,18 @@
                     form4.append("id", id_del.value);
 
 
-                    fetch('http://example.com/movies.json', {
+                    fetch("{% url 'administration:query_delete' %}", {
                         method: 'POST',
+                        headers: {
+                            "X-CSRFToken": csrftoken,
+
+                        },
                         body: form4
                     })
                         .then(response => response.json())
-                        .then(data =>{ console.log(data);
-                            response_area.value=data;
+                        .then(data => {
+                            console.log(data);
+                            response_area.value = data.value;
                         });
 
                     break;

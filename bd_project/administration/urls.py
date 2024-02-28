@@ -26,5 +26,8 @@ urlpatterns=[
 
     path("/Querys/", views.Query, name="query"),
     path("/Querys/Select", views.querySelect, name="query_select"),
+    path("/Querys/Insert", views.queryInsert, name="query_insert"),
+    path("/Querys/Update", views.queryUpdate, name="query_update"),
+    path("/Querys/Delete", views.queryDelete, name="query_delete"),
     
 ]
