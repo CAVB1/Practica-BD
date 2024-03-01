@@ -66,7 +66,9 @@ nav li a{
 h1{
     font-size: 2.3em;
 }
-
+h2{
+    font-size: 2.2em;
+}
 .h1-container{
     width: 100vw;
     height: 60px;
@@ -181,4 +183,130 @@ h1{
     height: 30px;
 }
 
+.new-form{
+    /* min-width: 300px;
+    width: 600px; */
+    width: 100%;
+    height: auto;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: space-around;
+    padding: 30px 0;
+    gap: 20px;
 
+    
+    
+}
+.new-form fieldset{
+    min-width: 300px;
+    width: 600px;
+    outline: none;
+    border: 1px solid var(--atomic-tangerine);
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    gap: 10px;
+    align-items: center;
+    justify-content: center;
+
+}
+
+.new-form fieldset legend, .privilege-container h2{
+    width: 40%;
+    color: gray;
+    align-self: center;
+    text-align: center;
+    margin-left: 10%;
+}
+
+.new-form input[type=text], .new-form input[type=password] {
+    width: 70%;
+    height: 35px;
+    border: var(--rose-quartz) 2px solid;
+    border-radius: 5px;
+    outline: none;
+    color: black;
+    padding: 0 10px;
+    font-size: 1.2em;
+}
+
+.new-form label{
+    width: 70%;
+    color: var(--rose-quartz);
+    opacity: 0.9;
+    font-weight: bold;
+    font-size: 1.3em;
+    margin-left: -15px;
+
+
+}
+
+
+.new-form input[type=submit] {
+    width: 50%;
+    height: 35px;
+    border: none;
+    background-color: var(--atomic-tangerine);
+    color: white;
+    font-family: inherit;
+    font-size: 1.3em;
+    font-weight: bolder;
+    text-transform: uppercase;
+    cursor: pointer;
+}
+
+.privilege-container{
+    width: 400px;
+    
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+    padding-top: 50px;
+    gap: 50px;
+    
+}
+
+.privilege-container li{
+    text-decoration: none;
+    list-style: none;
+}
+
+.privilege-container ul{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.privilege-container ul li{
+    width: auto;
+    height: 35px;
+    /* border: #000 1px solid ; */
+    border-radius: 10px;
+    padding: 5px;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--tea-green);
+    color: rgb(99, 99, 99);
+    text-transform: uppercase;
+    font-weight: 900;
+    text-decoration: none;
+    /* color: rgba(0, 0, 0, 0.464); */
+    
+
+}
+
+.privilege-container a{
+    /* background-color: orange; */
+    width: 100%;
+    font-size: inherit;
+    color: inherit;
+    font-weight: inherit;
+    text-decoration: none;
+}

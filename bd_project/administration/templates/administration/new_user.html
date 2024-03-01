@@ -61,7 +61,7 @@
                 <input type="submit" value="Guardar">
 
             </fieldset>
-            <div>
+            <div class="privilege-container">
                 <h2>
                     Privilegios
 
@@ -75,12 +75,12 @@
 
                 </div>
             </div>
-            <div>
+            <div class="privilege-container">
                 <h2>Agregar privilegios</h2>
                 <ul>
-                    {% for t in tables %}
-                    {% for p in privileges %}
-                    <li><a href="{% url 'administration:add_user_privilege' user_obj.id t p %}">{{ t }} : {{ p }}</a></li>
+                    {% for t, t_value in tables.items %}
+                    {% for p, p_value in privileges.items %}
+                    <li style="background-color: rgba(255, 153, 20, 0.808)"><a href="{% url 'administration:add_user_privilege' user_obj.id t p %}">{{ t_value }} | {{ p_value }}</a></li>
 
                     {% endfor %}
                     {% endfor %}
